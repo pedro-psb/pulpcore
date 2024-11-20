@@ -27,7 +27,7 @@ API_ROOT = {{ api_root | repr }}
 {% endif %}
 
 {% if s3_test | default(false) %}
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STORAGES__default = "storages.backends.s3boto3.S3Boto3Storage"
 MEDIA_ROOT = ""
 AWS_ACCESS_KEY_ID = "{{ minio_access_key }}"
 AWS_SECRET_ACCESS_KEY = "{{ minio_secret_key }}"
@@ -41,7 +41,7 @@ AWS_DEFAULT_ACL = "@none None"
 {% endif %}
 
 {% if azure_test | default(false) %}
-DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
+STORAGES__default = "storages.backends.azure_storage.AzureStorage"
 MEDIA_ROOT = ""
 AZURE_ACCOUNT_KEY = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
 AZURE_ACCOUNT_NAME = "devstoreaccount1"
@@ -53,7 +53,7 @@ AZURE_CONNECTION_STRING = 'DefaultEndpointsProtocol=http;AccountName=devstoreacc
 {% endif %}
 
 {% if gcp_test | default(false) %}
-DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+STORAGES__default = "storages.backends.gcloud.GoogleCloudStorage"
 MEDIA_ROOT = ""
 GS_BUCKET_NAME = "gcppulp"
 GS_CUSTOM_ENDPOINT = "http://ci-gcp:4443"

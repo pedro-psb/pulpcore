@@ -56,7 +56,8 @@ MEDIA_ROOT = str(DEPLOY_ROOT / "media")  # Django 3.1 adds support for pathlib.P
 STATIC_URL = "/assets/"
 STATIC_ROOT = DEPLOY_ROOT / STATIC_URL.strip("/")
 
-DEFAULT_FILE_STORAGE = "pulpcore.app.models.storage.FileSystem"
+STORAGES = {"default": {"BACKEND": "pulpcore.app.models.storage.FileSystem"}}
+
 REDIRECT_TO_OBJECT_STORAGE = True
 
 WORKING_DIRECTORY = DEPLOY_ROOT / "tmp"
@@ -368,14 +369,14 @@ from dynaconf import DjangoDynaconf, Validator  # noqa
 # Validators
 storage_validator = (
     Validator("REDIRECT_TO_OBJECT_STORAGE", eq=False)
-    | Validator("DEFAULT_FILE_STORAGE", eq="pulpcore.app.models.storage.FileSystem")
-    | Validator("DEFAULT_FILE_STORAGE", eq="storages.backends.azure_storage.AzureStorage")
-    | Validator("DEFAULT_FILE_STORAGE", eq="storages.backends.s3boto3.S3Boto3Storage")
-    | Validator("DEFAULT_FILE_STORAGE", eq="storages.backends.gcloud.GoogleCloudStorage")
+    | Validator("STORAGES.default", eq="pulpcore.app.models.storage.FileSystem")
+    | Validator("STORAGES.default", eq="storages.backends.azure_storage.AzureStorage")
+    | Validator("STORAGES.default", eq="storages.backends.s3boto3.S3Boto3Storage")
+    | Validator("STORAGES.default", eq="storages.backends.gcloud.GoogleCloudStorage")
 )
 storage_validator.messages["combined"] = (
     "'REDIRECT_TO_OBJECT_STORAGE=True' is only supported with the local file, S3, GCP or Azure"
-    "storage backend configured in DEFAULT_FILE_STORAGE."
+    "storage backend configured in STORAGES['default']."
 )
 
 cache_enabled_validator = Validator("CACHE_ENABLED", eq=True)
