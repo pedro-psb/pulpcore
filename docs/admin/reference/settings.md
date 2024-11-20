@@ -115,7 +115,7 @@ Overview of the integration with Pulp:
 ### REDIRECT_TO_OBJECT_STORAGE
 
 When set to `True` access to artifacts is redirected to the corresponding Cloud storage
-configured in `STORAGES['default']` using pre-authenticated URLs. When set to `False`
+configured in `STORAGES['default']['BACKEND']` using pre-authenticated URLs. When set to `False`
 artifacts are always served by the content app instead.
 
 Defaults to `True`; ignored for local file storage.
@@ -124,7 +124,7 @@ Defaults to `True`; ignored for local file storage.
 
 The location where Pulp will store files. By default this is `/var/lib/pulp/media`.
 
-This only affects storage location when `STORAGES['default']` is set to
+This only affects storage location when `STORAGES['default']['BACKEND']` is set to
 `pulpcore.app.models.storage.FileSystem`.
 
 See the [storage documentation](site:pulpcore/docs/admin/guides/configure-pulp/configure-storages.md) for more info.
@@ -222,7 +222,7 @@ It should have permissions of:
 ### CHUNKED_UPLOAD_DIR
 
 A relative path inside the DEPLOY_ROOT directory used exclusively for uploaded chunks. The
-uploaded chunks are stored in the default storage specified by `STORAGES['default']`. This
+uploaded chunks are stored in the default storage specified by `STORAGES['default']['BACKEND']`. This
 option allows users to customize the actual place where chunked uploads should be stored within
 the declared storage. The default, `upload`, is sufficient for most use cases. A change to
 this setting only applies to uploads created after the change.

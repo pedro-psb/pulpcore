@@ -376,7 +376,7 @@ storage_validator = (
 )
 storage_validator.messages["combined"] = (
     "'REDIRECT_TO_OBJECT_STORAGE=True' is only supported with the local file, S3, GCP or Azure"
-    "storage backend configured in STORAGES['default']."
+    "storage backend configured in STORAGES['default']['BACKEND']."
 )
 
 cache_enabled_validator = Validator("CACHE_ENABLED", eq=True)
