@@ -369,10 +369,10 @@ from dynaconf import DjangoDynaconf, Validator  # noqa
 # Validators
 storage_validator = (
     Validator("REDIRECT_TO_OBJECT_STORAGE", eq=False)
-    | Validator("STORAGES.default", eq="pulpcore.app.models.storage.FileSystem")
-    | Validator("STORAGES.default", eq="storages.backends.azure_storage.AzureStorage")
-    | Validator("STORAGES.default", eq="storages.backends.s3boto3.S3Boto3Storage")
-    | Validator("STORAGES.default", eq="storages.backends.gcloud.GoogleCloudStorage")
+    | Validator("STORAGES.default.BACKEND", eq="pulpcore.app.models.storage.FileSystem")
+    | Validator("STORAGES.default.BACKEND", eq="storages.backends.azure_storage.AzureStorage")
+    | Validator("STORAGES.default.BACKEND", eq="storages.backends.s3boto3.S3Boto3Storage")
+    | Validator("STORAGES.default.BACKEND", eq="storages.backends.gcloud.GoogleCloudStorage")
 )
 storage_validator.messages["combined"] = (
     "'REDIRECT_TO_OBJECT_STORAGE=True' is only supported with the local file, S3, GCP or Azure"

@@ -75,6 +75,7 @@ Here is an example configuration that will use a bucket called `pulp3` that is h
 region `eu-central-1`:
 
 ```python
+MEDIA_ROOT = ""
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
@@ -88,7 +89,6 @@ STORAGES = {
         },
     },
 }
-MEDIA_ROOT = ""
 ```
 
 Compreheensive options for Amazon S3 can be found in
@@ -125,20 +125,20 @@ pip install django-storages[azure]
 #### Configure
 
 ```python
+MEDIA_ROOT = ""
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.azure_storage.AzureStorage",
         "OPTIONS": {
             "account_name": '<storage account name>',
-            "container": '<container name>',  # As created within the blob service of your storage account
+            "azure_container": '<container name>',  # As created within the blob service of your storage account
             "account_key": '<Key1 or Key2>',  # From the access keys of your storage account
-            "url_expiration_secs": 60,
+            "expiration_secs": 60,
             "overwrite_files": 'True',
             "location": '<path>'  # The folder within the container where your pulp objects will be stored
         },
     },
 }
-MEDIA_ROOT = ""
 ```
 
 Compreheensive options for Azure Blob can be found in

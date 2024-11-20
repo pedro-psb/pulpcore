@@ -71,10 +71,17 @@ For a zero downtime key rotation you can follow the slightly more complex recipe
 By default Pulp uses PostgreSQL on localhost. PostgreSQL is the only supported database. For
 instructions on how to configure the database, refer to `database installation <database-install>`.
 
+### DEFULT_FILE_STORAGE
+
+!!! warning "Removed in `3.70`"
+    The `DEFAULT_FILE_STORAGE` setting was deprecated in
+    [django `4.2`](https://docs.djangoproject.com/en/4.2/ref/settings/#default-file-storage).
+    Use [`STORAGES`](#STORAGES) instead.
+
 ### STORAGES
 
-!!! warning "Changed in `3.70`"
-    This replaces `DEFAULT_FILE_STORAGE` which [was deprecated in django `4.2`](https://docs.djangoproject.com/en/4.2/ref/settings/#default-file-storage).
+!!! note "Added in `3.70`"
+    Replaces [`DEFAULT_DJANGO_STORAGES`](#DEFULT_FILE_STORAGE).
 
 Pulp uses [django-storages](https://django-storages.readthedocs.io/en/latest/index.html) to support multiple storage backends.
 If no backend is configured, Pulp will by default use the local filesystem (`pulpcore.app.models.storage.FileSystem`).
