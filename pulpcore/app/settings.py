@@ -56,7 +56,14 @@ MEDIA_ROOT = str(DEPLOY_ROOT / "media")  # Django 3.1 adds support for pathlib.P
 STATIC_URL = "/assets/"
 STATIC_ROOT = DEPLOY_ROOT / STATIC_URL.strip("/")
 
-STORAGES = {"default": {"BACKEND": "pulpcore.app.models.storage.FileSystem"}}
+STORAGES = {
+    "default": {"BACKEND": "pulpcore.app.models.storage.FileSystem"},
+    "staticfiles": {
+        # This is django's default, but when customizing STORAGES we need to add explicitly
+        # https://docs.djangoproject.com/en/4.2/ref/settings/#storages
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 REDIRECT_TO_OBJECT_STORAGE = True
 

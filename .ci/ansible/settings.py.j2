@@ -29,6 +29,7 @@ API_ROOT = {{ api_root | repr }}
 {% if s3_test | default(false) %}
 MEDIA_ROOT = ""
 STORAGES = {
+    "dynaconf_merge": True,
     "default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
         "OPTIONS": {
@@ -52,6 +53,7 @@ S3_USE_SIGV4 = True
 {% if azure_test | default(false) %}
 MEDIA_ROOT = ""
 STORAGES = {
+    "dynaconf_merge": True,
     "default": {
         "BACKEND": "storages.backends.azure_storage.AzureStorage",
         "OPTIONS": {
@@ -69,6 +71,7 @@ STORAGES = {
 
 {% if gcp_test | default(false) %}
 STORAGES = {
+    "dynaconf_merge": True,
     "default": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
         "OPTIONS": {
