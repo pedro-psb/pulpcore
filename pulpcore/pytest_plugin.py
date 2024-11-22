@@ -621,7 +621,7 @@ def backend_settings_factory(pulp_settings):
             "AZURE_CONNECTION_STRING",
         ]
         settings = storage_settings or dict()
-        backend = storage_class or settings.STORAGES["default"]["BACKEND"]
+        backend = storage_class or pulp_settings.STORAGES["default"]["BACKEND"]
         for key in keys[backend]:
             if key not in settings:
                 settings[key] = getattr(pulp_settings, key, None)
