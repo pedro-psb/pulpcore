@@ -56,14 +56,6 @@ MEDIA_ROOT = str(DEPLOY_ROOT / "media")  # Django 3.1 adds support for pathlib.P
 STATIC_URL = "/assets/"
 STATIC_ROOT = DEPLOY_ROOT / STATIC_URL.strip("/")
 
-STORAGES = {
-    "default": {"BACKEND": "pulpcore.app.models.storage.FileSystem"},
-    "staticfiles": {
-        # This is django's default, but when customizing STORAGES we need to add explicitly
-        # https://docs.djangoproject.com/en/4.2/ref/settings/#storages
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
 
 REDIRECT_TO_OBJECT_STORAGE = True
 
@@ -348,6 +340,7 @@ DOMAIN_ENABLED = False
 
 SHELL_PLUS_IMPORTS = [
     "from pulpcore.app.util import get_domain, get_domain_pk, set_domain, get_url, extract_pk",
+
     "from pulpcore.tasking.tasks import dispatch, cancel_task, wakeup_worker",
 ]
 
@@ -371,7 +364,7 @@ OTEL_ENABLED = False
 
 # HERE STARTS DYNACONF EXTENSION LOAD (Keep at the very bottom of settings.py)
 # Read more at https://www.dynaconf.com/django/
-from dynaconf import DjangoDynaconf, Validator  # noqa
+from dynaconf import DjangoDynaconf, Validator, get_history  # noqa
 
 # Validators
 storage_validator = (
@@ -481,13 +474,29 @@ settings = DjangoDynaconf(
         api_root_validator,
         cache_validator,
         sha256_validator,
-        storage_validator,
         unknown_algs_validator,
         json_header_auth_validator,
         authentication_json_header_openapi_security_scheme_validator,
     ],
     post_hooks=otel_middleware_hook,
 )
+
+# Compatiblity layer for DEFAULT_FILE_STORAGE deprecation (remove in 3.85):
+# 
+# - Removed DEFAULT_FILE_STORAGE from toplevel setting, because STORAGES and DEFAULT_FILE_STORAGE
+#   are mutually exclusive. This enables users to migrate to STORAGES before true removal of the
+#   legacy setting.
+# - After dropping this compat-layer, put the default STORAGES in the toplevel module, as usual.
+#   Then, DEFAULT_FILE_STORAGE would not be allowed anymore.
+ 
+dfstorage_history = get_history(settings, key="DEFAULT_FILE_STORAGE") 
+django_default_used = len(dfstorage_history) == 1 and dfstorage_history[0]["identifier"] == "undefined"
+if django_default_used:
+    settings.set("STORAGES.default.BACKEND", "pulpcore.app.models.storage.FileSystem")
+
+settings.validators.register(storage_validator)
+settings.validators.validate(only=["STORAGES.default.BACKEND", "REDIRECT_TO_OBJECT_STORAGE"])
+
 # HERE ENDS DYNACONF EXTENSION LOAD (No more code below this line)
 
 _logger = getLogger(__name__)
