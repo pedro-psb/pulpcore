@@ -735,7 +735,11 @@ def monitor_task_group(pulpcore_bindings):
 
 @pytest.fixture(scope="session")
 def pulp_settings():
-    from pulpcore.app import settings
+    import django
+
+    django.setup()
+
+    from django.conf import settings
 
     return settings
 
